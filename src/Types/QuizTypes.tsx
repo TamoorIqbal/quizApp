@@ -24,6 +24,7 @@ export type questionPropsType = {
     answer: any
     category:number
     QuestionAanswer:string
+    
 
 }
 export type homePropsType = {

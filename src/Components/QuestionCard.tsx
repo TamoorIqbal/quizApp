@@ -2,24 +2,23 @@ import React, { useState, useRef } from 'react'
 import './../App.css'
 import { questionPropsType } from './../Types/QuizTypes'
 
-export const QuestionCard: React.FC<questionPropsType> = ({ answer,QuestionAanswer, question, options, callback, category, currentStep, quiz }) => {
+export const QuestionCard: React.FC<questionPropsType> = ({ answer, QuestionAanswer, question, options, callback, category, currentStep, quiz }) => {
     let [selectedAns, setSelectedAns] = useState("");
     let [answers, setanswers] = useState("");
-    const handleSelection = (ev: any) => {
+    let [expand, setExpand] = useState(true);
+    
+    
+    const handleSelection = (ev: React.FormEvent<EventTarget>|any) => {
         setSelectedAns(ev.target.value);
         setanswers(answer)
-        // if (answer) {
-        //     alert("moon")
-        //     ev.target.style.backgroundColor = 'green';
-        // }
-        // if (selectedAns) {
-        //     ev.target.style.backgroundColor = 'red';
-        // }
-        // console.log(ev.target);
-
-        // backcolor =answer  > 0 ? 'green' : 'red';
+        console.log(answer);
+        if(ev.target.value){
+            setExpand(false)
+           }
+        
     }
 
+  
 
     return (<div>
         <div className="container-fluid " >
@@ -36,7 +35,7 @@ export const QuestionCard: React.FC<questionPropsType> = ({ answer,QuestionAansw
 
                         <div className="quiz" id="quiz" data-toggle="buttons">
                             <label className="element-animation1 btn btn-lg btn-primary btn-block"><span className="btn-label " ><i className="glyphicon glyphicon-chevron-right"></i></span>
-                                <input type="radio" name="q_answer" value={options[0]} onChange={handleSelection} checked={selectedAns === options[0]} required />{options[0]}</label>
+                                <input type="radio" name="q_answer" value={options[0]}  onChange={handleSelection} checked={selectedAns === options[0]} required />{options[0]}</label>
 
                             <label className="element-animation2 btn btn-lg btn-primary btn-block"><span className="btn-label "  ><i className="glyphicon glyphicon-chevron-right"></i></span>
                                 <input type="radio" name="q_answer" value={options[1]} onChange={handleSelection} checked={selectedAns === options[1]} required />{options[1]}</label>
@@ -49,31 +48,32 @@ export const QuestionCard: React.FC<questionPropsType> = ({ answer,QuestionAansw
                         </div>
                     </div>
                     <div className="modal-footer text-muted ">
-                       
-                    <div className="row">
-                        <div className="col-sm-8 m">
-                            <div className="card green ">
-                            <div className="card-body">
-                                    <h4 className="card-title">Answer : <span style={{fontWeight:"800",fontSize:"20px"}}>{answers}</span></h4>
 
+                        <div className="row">
+                            <div className="col-sm-8 m">
+                                <div className="card green ">
+                                    <div className="card-body">
+                                        <h4 className="card-title" >Answer : <span style={{ fontWeight: "800", fontSize: "20px" }}>{answers}</span></h4>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="col-sm-4 m">
+                                <div className="card">
+                                    <div className="card-body">
+                                        <button disabled={expand}  onClick={(e: React.FormEvent<EventTarget>) => {
+                                            callback(e, selectedAns)
+                                            // console.log(e.target); 
+                                            setanswers('')
+                                            setExpand(true)
+                                        }
+                                        } id="answer" type="button" className="btn btn-primary btn-lg">Submit</button>
+                                        {/* <input type="submit" className="submit"/> */}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div className="col-sm-4 m">
-                            <div className="card">
-                                <div className="card-body">
-                                <button onClick={(e: React.FormEvent<EventTarget>) => {
-                            callback(e, selectedAns)
-                            // console.log(e.target); 
-                            setanswers('')
-                        }
-                        } id="answer" type="button" className="btn btn-primary btn-lg">Submit</button>
-                        {/* <input type="submit" className="submit"/> */}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     </div>
                     {/* </form> */}
 
