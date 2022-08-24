@@ -4,6 +4,8 @@ import { QuizAPI } from './Services/QuizAPI'
 import { QuestionType } from './Types/QuizTypes'
 import { QuestionCard } from './Components/QuestionCard'
 import { Home } from './Components/Home'
+
+import { initNotification } from "./Services/firebaseService";
 function App() {
   let [quiz, setQuiz] = useState<QuestionType[]>([])
   let [currentStep, setCurrentStep] = useState(0)
@@ -14,23 +16,26 @@ function App() {
   let [QuestionAanswer, setQuestionAanswer] = useState('');
 
   // for Home
-  let [totalQuestions,settotalQuestions] = useState(10);
-  let [category,setcategory] = useState(9);
-  let [level,setlevel] = useState("easy");
+  let [totalQuestions, settotalQuestions] = useState(10);
+  let [category, setcategory] = useState(9);
+  let [level, setlevel] = useState("easy");
 
   // let totalQuestions:number=0;
   // let category:number=9;
   // let level:string='easy';
   const handleChange = (e: React.FormEvent<EventTarget>, totalQuestions: number, category: number, level: string) => {
     e.preventDefault();
-    console.log(totalQuestions);
-    console.log(category);
-    console.log(level);
+    // console.log(totalQuestions);
+    // console.log(category);
+    // console.log(level);
     settotalQuestions(totalQuestions);
     setcategory(category);
     setlevel(level);
   }
-  
+  useEffect(() => {
+    initNotification();
+  }, [])
+
   useEffect(() => {
     async function fetchData() {
       const questions: QuestionType[] = await QuizAPI(totalQuestions, category, level)
@@ -38,18 +43,18 @@ function App() {
 
     }
     fetchData();
-  }, [level,totalQuestions,category])
-  
-  
+  }, [level, totalQuestions, category])
+
+
 
   // Callback
   const handleSubmit = (e: React.FormEvent<EventTarget>, userAns: string) => {
     e.preventDefault();
-    console.log(userAns);
+    // console.log(userAns);
     let currentQuestion: QuestionType = quiz[currentStep];
     console.log('correct Answer is ' + currentQuestion.answer + '___users Answer ' + userAns);
     // if(currentQuestion.answer){
-      setQuestionAanswer(currentQuestion.answer);
+    setQuestionAanswer(currentQuestion.answer);
     // }
     //for score
     if (userAns == currentQuestion.answer) {
@@ -57,8 +62,8 @@ function App() {
 
     }
     //for next Question
-    
-    
+
+
     if (currentStep !== quiz.length - 1) {
       setCurrentStep(++currentStep);
     } else {
@@ -123,7 +128,7 @@ function App() {
             QuestionAanswer={QuestionAanswer}
           /> : null
       }
-      
+
     </div>
   );
 }

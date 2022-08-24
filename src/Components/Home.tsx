@@ -12,9 +12,9 @@ export const Home: React.FC<homePropsType> = ({ setShowquiz, setShowHome, handle
     //     setCat(ev.target.value);
     //     setLevl(ev.target.value);
     // }
-    console.log(total);
-    console.log(cat);
-    console.log(levl);
+    // console.log(total);
+    // console.log(cat);
+    // console.log(levl);
     
     return (<>
         <div className="container-fluid  ">
